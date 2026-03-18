@@ -13,11 +13,12 @@
   --accent-cold: #57d7e5;
   --success: #7ee081;
   --shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
-  font-family: "Avenir Next", "Trebuchet MS", "Segoe UI", sans-serif;
-  background:
+  --page-background:
     radial-gradient(circle at 0% 0%, rgba(87, 215, 229, 0.18), transparent 28%),
     radial-gradient(circle at 100% 0%, rgba(255, 177, 74, 0.16), transparent 24%),
     linear-gradient(160deg, var(--bg) 0%, #0b1c28 45%, var(--bg-deep) 100%);
+  font-family: "Avenir Next", "Trebuchet MS", "Segoe UI", sans-serif;
+  background: var(--page-background);
 }
 
 * {
@@ -25,14 +26,18 @@
 }
 
 html {
+  background-color: var(--bg);
+  background-image: var(--page-background);
   min-height: 100%;
 }
 
 body {
   margin: 0;
   min-height: 100vh;
+  min-height: 100dvh;
   color: var(--text);
-  background: transparent;
+  background-color: var(--bg);
+  background-image: var(--page-background);
 }
 
 button,
@@ -44,7 +49,11 @@ select {
 
 .app-shell {
   min-height: 100vh;
-  padding: 32px 16px 48px;
+  min-height: 100dvh;
+  padding-top: max(32px, env(safe-area-inset-top));
+  padding-right: max(16px, env(safe-area-inset-right));
+  padding-bottom: max(48px, env(safe-area-inset-bottom));
+  padding-left: max(16px, env(safe-area-inset-left));
 }
 
 .layout {
