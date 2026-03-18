@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 
 export default defineConfig({
+  base: '/golod-app/',
   root: '.',
   build: {
     outDir: 'dist',
