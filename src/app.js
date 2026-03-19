@@ -1,7 +1,40 @@
 import { motivationQuotes } from './motivation.js';
 
-const START_TIME = new Date(2026, 2, 10, 22, 0, 0).getTime();
-const END_TIME = new Date(2026, 2, 31, 22, 0, 0).getTime();
+// Default times (used if no saved settings)
+const DEFAULT_START_TIME = new Date(2026, 2, 10, 22, 0, 0).getTime();
+const DEFAULT_END_TIME = new Date(2026, 2, 31, 22, 0, 0).getTime();
+
+// Load from localStorage or use defaults
+function loadSettings() {
+  const saved = localStorage.getItem('fastingSettings');
+  if (saved) {
+    try {
+      const parsed = JSON.parse(saved);
+      return {
+        startTime: parsed.startTime,
+        endTime: parsed.endTime
+      };
+    } catch (e) {
+      console.error('Failed to parse saved settings:', e);
+    }
+  }
+  return {
+    startTime: DEFAULT_START_TIME,
+    endTime: DEFAULT_END_TIME
+  };
+}
+
+// Save settings to localStorage
+function saveSettings(startTime, endTime) {
+  localStorage.setItem('fastingSettings', JSON.stringify({
+    startTime,
+    endTime
+  }));
+}
+
+const settings = loadSettings();
+const START_TIME = settings.startTime;
+const END_TIME = settings.endTime;
 const TOTAL_DURATION = Math.max(END_TIME - START_TIME, 1);
 const LOCALE = 'ru-RU';
 
@@ -42,7 +75,14 @@ const refs = {
   remainingValue: document.getElementById('remainingValue'),
   quoteText: document.getElementById('quoteText'),
   quoteAuthor: document.getElementById('quoteAuthor'),
-  nextQuoteButton: document.getElementById('nextQuoteButton')
+  nextQuoteButton: document.getElementById('nextQuoteButton'),
+  toggleSettingsButton: document.getElementById('toggleSettingsButton'),
+  settingsForm: document.getElementById('settingsForm'),
+  saveSettingsButton: document.getElementById('saveSettingsButton'),
+  startDateInput: document.getElementById('startDate'),
+  endDateInput: document.getElementById('endDate'),
+  settingsInfo: document.getElementById('settingsInfo'),
+  themeToggle: document.getElementById('themeToggle')
 };
 
 let currentQuoteIndex = -1;
@@ -219,13 +259,72 @@ async function registerServiceWorker() {
   }
 }
 
+// Theme toggle functionality
+function initTheme() {
+  const savedTheme = localStorage.getItem('theme');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  
+  const applyTheme = (theme) => {
+    if (theme === 'light') {
+      document.documentElement.setAttribute('data-theme', 'light');
+      refs.themeToggle.textContent = '☀️';
+    } else {
+      document.documentElement.removeAttribute('data-theme');
+      refs.themeToggle.textContent = '🌙';
+    }
+  };
+  
+  // Apply saved theme or system preference
+  if (savedTheme) {
+    applyTheme(savedTheme);
+  } else if (!prefersDark) {
+    applyTheme('light');
+  }
+  
+  refs.themeToggle.addEventListener('click', () => {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+    localStorage.setItem('theme', newTheme);
+    applyTheme(newTheme);
+  });
+}
+
 function init() {
+  initTheme();
   updateStaticLabels();
   updateUI();
   showRandomQuote();
   registerServiceWorker();
 
   refs.nextQuoteButton.addEventListener('click', showRandomQuote);
+
+  // Settings functionality
+  let settingsVisible = false;
+  refs.toggleSettingsButton.addEventListener('click', () => {
+    settingsVisible = !settingsVisible;
+    refs.settingsForm.style.display = settingsVisible ? 'block' : 'none';
+    refs.settingsInfo.style.display = settingsVisible ? 'none' : 'block';
+    refs.toggleSettingsButton.textContent = settingsVisible ? 'Отмена' : 'Изменить';
+    
+    if (settingsVisible) {
+      // Populate inputs with current values
+      refs.startDateInput.value = new Date(START_TIME).toISOString().slice(0, 16);
+      refs.endDateInput.value = new Date(END_TIME).toISOString().slice(0, 16);
+    }
+  });
+
+  refs.saveSettingsButton.addEventListener('click', () => {
+    const newStartTime = new Date(refs.startDateInput.value).getTime();
+    const newEndTime = new Date(refs.endDateInput.value).getTime();
+    
+    if (newStartTime >= newEndTime) {
+      alert('Дата окончания должна быть позже даты старта!');
+      return;
+    }
+    
+    saveSettings(newStartTime, newEndTime);
+    location.reload(); // Reload to apply new settings
+  });
 
   window.setInterval(updateUI, 1000);
   window.setInterval(showRandomQuote, 60000);

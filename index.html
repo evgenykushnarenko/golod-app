@@ -34,6 +34,7 @@
         <div class="hero-meta">
           <span class="status-pill" id="fastingStatus">Подготовка</span>
           <span class="hero-time" id="currentTime">Синхронизация времени...</span>
+          <button class="theme-toggle" id="themeToggle" aria-label="Переключить тему">🌙</button>
         </div>
       </section>
 
@@ -121,6 +122,32 @@
           Готовим первую фразу, чтобы экран не молчал.
         </blockquote>
         <p class="quote-author" id="quoteAuthor">—</p>
+      </section>
+
+      <section class="card settings-card" style="--delay: 0.30s;">
+        <div class="card-head">
+          <div>
+            <p class="section-kicker">Настройки</p>
+            <h2 class="section-title">Параметры голодовки</h2>
+          </div>
+          <button class="ghost-button" id="toggleSettingsButton" type="button">Изменить</button>
+        </div>
+
+        <div class="settings-form" id="settingsForm" style="display: none;">
+          <div class="form-group">
+            <label for="startDate">Дата старта</label>
+            <input type="datetime-local" id="startDate" required>
+          </div>
+          <div class="form-group">
+            <label for="endDate">Дата окончания</label>
+            <input type="datetime-local" id="endDate" required>
+          </div>
+          <button type="button" class="primary-button" id="saveSettingsButton">Сохранить</button>
+        </div>
+
+        <p class="settings-info" id="settingsInfo">
+          Даты можно изменить в настройках. Изменения сохранятся в браузере.
+        </p>
       </section>
     </main>
   </div>

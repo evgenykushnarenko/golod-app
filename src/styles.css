@@ -21,6 +21,28 @@
   background: var(--page-background);
 }
 
+/* Light theme */
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #f5f7fa;
+  --bg-deep: #e8ecf1;
+  --surface: rgba(255, 255, 255, 0.8);
+  --surface-strong: rgba(255, 255, 255, 0.92);
+  --surface-soft: rgba(0, 0, 0, 0.04);
+  --border: rgba(0, 0, 0, 0.1);
+  --text: #1a2332;
+  --muted: #5a6a7a;
+  --accent: #e69500;
+  --accent-soft: #ffb14a;
+  --accent-cold: #2ab5c7;
+  --success: #3a9e4a;
+  --shadow: 0 24px 80px rgba(0, 0, 0, 0.12);
+  --page-background:
+    radial-gradient(circle at 0% 0%, rgba(87, 215, 229, 0.15), transparent 28%),
+    radial-gradient(circle at 100% 0%, rgba(255, 177, 74, 0.12), transparent 24%),
+    linear-gradient(160deg, var(--bg) 0%, #dce4ec 45%, var(--bg-deep) 100%);
+}
+
 * {
   box-sizing: border-box;
 }
@@ -80,7 +102,8 @@ select {
 .hero,
 .progress-card,
 .timer-card,
-.quote-card {
+.quote-card,
+.settings-card {
   padding: 28px;
 }
 
@@ -134,6 +157,27 @@ select {
   flex-wrap: wrap;
   gap: 12px;
   align-items: center;
+}
+
+.theme-toggle {
+  margin-left: auto;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface-soft);
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: transform 0.18s ease, background-color 0.18s ease;
+}
+
+.theme-toggle:hover {
+  transform: translateY(-1px);
+  background: var(--surface);
+}
+
+.theme-toggle:focus-visible {
+  outline: 2px solid var(--accent-cold);
+  outline-offset: 3px;
 }
 
 .status-pill {
@@ -347,6 +391,71 @@ select {
 .quote-author {
   margin: 0;
   font-size: 1rem;
+}
+
+/* Settings Card */
+.settings-card {
+  display: grid;
+  gap: 20px;
+}
+
+.settings-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+
+.form-group input {
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface-soft);
+  color: var(--text);
+  font-size: 1rem;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--accent-cold);
+}
+
+.primary-button {
+  padding: 12px 24px;
+  border-radius: 999px;
+  border: none;
+  background: var(--accent);
+  color: var(--bg);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.18s ease, background-color 0.18s ease;
+}
+
+.primary-button:hover {
+  transform: translateY(-1px);
+  background: var(--accent-soft);
+}
+
+.primary-button:focus-visible {
+  outline: 2px solid var(--accent-cold);
+  outline-offset: 3px;
+}
+
+.settings-info {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--muted);
 }
 
 @keyframes rise-in {
