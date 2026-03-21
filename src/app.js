@@ -147,30 +147,34 @@ const SHORT_DATE_FORMATTER = new Intl.DateTimeFormat(LOCALE, {
 
 // ==================== DOM РЕФЕРЕНСЫ ====================
 
-const refs = {
-  currentTime: document.getElementById('currentTime'),
-  fastingStatus: document.getElementById('fastingStatus'),
-  rangeLabel: document.getElementById('rangeLabel'),
-  progressRing: document.getElementById('progressRing'),
-  progressPercent: document.getElementById('progressPercent'),
-  progressLabel: document.getElementById('progressLabel'),
-  progressTitle: document.getElementById('progressTitle'),
-  progressSummary: document.getElementById('progressSummary'),
-  countdownTitle: document.getElementById('countdownTitle'),
-  durationLabel: document.getElementById('durationLabel'),
-  days: document.getElementById('days'),
-  hours: document.getElementById('hours'),
-  minutes: document.getElementById('minutes'),
-  seconds: document.getElementById('seconds'),
-  startTimeLabel: document.getElementById('startTimeLabel'),
-  endTimeLabel: document.getElementById('endTimeLabel'),
-  elapsedValue: document.getElementById('elapsedValue'),
-  remainingValue: document.getElementById('remainingValue'),
-  quoteText: document.getElementById('quoteText'),
-  quoteAuthor: document.getElementById('quoteAuthor'),
-  nextQuoteButton: document.getElementById('nextQuoteButton'),
-  timerGrid: document.querySelector('.timer-grid')
-};
+let refs = {};
+
+function initRefs() {
+  refs = {
+    currentTime: document.getElementById('currentTime'),
+    fastingStatus: document.getElementById('fastingStatus'),
+    rangeLabel: document.getElementById('rangeLabel'),
+    progressRing: document.getElementById('progressRing'),
+    progressPercent: document.getElementById('progressPercent'),
+    progressLabel: document.getElementById('progressLabel'),
+    progressTitle: document.getElementById('progressTitle'),
+    progressSummary: document.getElementById('progressSummary'),
+    countdownTitle: document.getElementById('countdownTitle'),
+    durationLabel: document.getElementById('durationLabel'),
+    days: document.getElementById('days'),
+    hours: document.getElementById('hours'),
+    minutes: document.getElementById('minutes'),
+    seconds: document.getElementById('seconds'),
+    startTimeLabel: document.getElementById('startTimeLabel'),
+    endTimeLabel: document.getElementById('endTimeLabel'),
+    elapsedValue: document.getElementById('elapsedValue'),
+    remainingValue: document.getElementById('remainingValue'),
+    quoteText: document.getElementById('quoteText'),
+    quoteAuthor: document.getElementById('quoteAuthor'),
+    nextQuoteButton: document.getElementById('nextQuoteButton'),
+    timerGrid: document.querySelector('.timer-grid')
+  };
+}
 
 // ==================== УТИЛИТЫ ====================
 
@@ -843,6 +847,9 @@ function updateUI() {
 // ==================== ИНИЦИАЛИЗАЦИЯ ====================
 
 function init() {
+  // Инициализируем DOM-ссылки
+  initRefs();
+  
   // Применяем сохранённую тему
   Storage.setTheme(Storage.getTheme());
 
