@@ -819,6 +819,7 @@ let lastUpdate = 0;
 function updateLoop(timestamp) {
   // Обновляем каждую секунду
   if (timestamp - lastUpdate >= 1000) {
+    console.log('[DEBUG] updateLoop tick', timestamp);
     const now = Date.now();
     const state = getState(now);
 
@@ -845,8 +846,11 @@ function updateUI() {
 // ==================== ИНИЦИАЛИЗАЦИЯ ====================
 
 function init() {
+  console.log('[DEBUG] init() started');
+  
   // Инициализируем DOM-ссылки
   initRefs();
+  console.log('[DEBUG] initRefs() completed', refs);
   
   // Применяем сохранённую тему
   Storage.setTheme(Storage.getTheme());
@@ -858,7 +862,9 @@ function init() {
   }
 
   // Начальное обновление
+  console.log('[DEBUG] Calling updateUI()');
   updateUI();
+  console.log('[DEBUG] updateUI() completed');
   showRandomQuote();
   registerServiceWorker();
 
