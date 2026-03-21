@@ -4,42 +4,65 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Счетчик голодания</title>
+  
+  <!-- Тема и цвета -->
   <meta name="theme-color" content="#07131d">
+  <meta name="msapplication-TileColor" content="#07131d">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="mobile-web-app-capable" content="yes">
-  <meta
-    name="description"
-    content="Трекер голодовки с живым обратным отсчетом, кольцом прогресса и мотивационными фразами."
-  >
+  
+  <!-- Описание -->
+  <meta name="description" content="Трекер голодовки с живым обратным отсчетом, кольцом прогресса и мотивационными фразами.">
+  <meta name="keywords" content="голодовка, трекер, таймер, здоровье, прогресс">
+  <meta name="author" content="Evgeny">
+  
+  <!-- Open Graph -->
+  <meta property="og:title" content="Счетчик голодания">
+  <meta property="og:description" content="Трекер голодовки с живым обратным отсчетом, кольцом прогресса и мотивационными фразами.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="data:image/svg+xml,%3csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20512%20512'%3e%3cdefs%3e%3clinearGradient%20id='bg'%20x1='0%25'%20y1='0%25'%20x2='100%25'%20y2='100%25'%3e%3cstop%20offset='0%25'%20stop-color='%2357d7e5'%20/%3e%3cstop%20offset='100%25'%20stop-color='%23ffb14a'%20/%3e%3c/linearGradient%3e%3c/defs%3e%3crect%20width='512'%20height='512'%20rx='128'%20fill='%23091722'%20/%3e%3ccircle%20cx='256'%20cy='256'%20r='176'%20fill='none'%20stroke='url(%23bg)'%20stroke-width='48'%20stroke-linecap='round'%20stroke-dasharray='832%20272'%20transform='rotate(-90%20256%20256)'%20/%3e%3cpath%20d='M192%20132h128v48c0%2038-22%2064-48%2084%2026%2020%2048%2046%2048%2084v48H192v-48c0-38%2022-64%2048-84-26-20-48-46-48-84v-48z'%20fill='none'%20stroke='%23f2f7fb'%20stroke-width='32'%20stroke-linejoin='round'%20/%3e%3cpath%20d='M216%20376h80'%20stroke='%2357d7e5'%20stroke-width='28'%20stroke-linecap='round'%20/%3e%3c/svg%3e">
+  <meta property="og:image:type" content="image/svg+xml">
+  <meta property="og:locale" content="ru_RU">
+  
+  <!-- Twitter Cards -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Счетчик голодания">
+  <meta name="twitter:description" content="Трекер голодовки с живым обратным отсчетом, кольцом прогресса и мотивационными фразами.">
+  <meta name="twitter:image" content="data:image/svg+xml,%3csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20512%20512'%3e%3cdefs%3e%3clinearGradient%20id='bg'%20x1='0%25'%20y1='0%25'%20x2='100%25'%20y2='100%25'%3e%3cstop%20offset='0%25'%20stop-color='%2357d7e5'%20/%3e%3cstop%20offset='100%25'%20stop-color='%23ffb14a'%20/%3e%3c/linearGradient%3e%3c/defs%3e%3crect%20width='512'%20height='512'%20rx='128'%20fill='%23091722'%20/%3e%3ccircle%20cx='256'%20cy='256'%20r='176'%20fill='none'%20stroke='url(%23bg)'%20stroke-width='48'%20stroke-linecap='round'%20stroke-dasharray='832%20272'%20transform='rotate(-90%20256%20256)'%20/%3e%3cpath%20d='M192%20132h128v48c0%2038-22%2064-48%2084%2026%2020%2048%2046%2048%2084v48H192v-48c0-38%2022-64%2048-84-26-20-48-46-48-84v-48z'%20fill='none'%20stroke='%23f2f7fb'%20stroke-width='32'%20stroke-linejoin='round'%20/%3e%3cpath%20d='M216%20376h80'%20stroke='%2357d7e5'%20stroke-width='28'%20stroke-linecap='round'%20/%3e%3c/svg%3e">
+  
+  <!-- Иконки -->
   <link rel="icon" type="image/svg+xml" href="./assets/favicon-CaMMpFW5.svg">
-  <script>
-    const manifestLink = document.createElement('link');
-    manifestLink.rel = 'manifest';
-    manifestLink.href = new URL('./manifest.json', window.location.href).toString();
-    document.head.append(manifestLink);
-  </script>
-  <script type="module" crossorigin src="./assets/index-DQ195W2i.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-CfY85vD4.css">
+  <link rel="apple-touch-icon" href="./assets/icon-DVtki7Rh.svg">
+  
+  <!-- Стили -->
+  
+  <!-- Манифест -->
+  <link rel="manifest" href="./assets/manifest-CrVMqNic.json">
+  <script type="module" crossorigin src="./assets/index-CfFCdMhB.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-AfNbJFpB.css">
 </head>
 <body>
   <div class="app-shell">
     <main class="layout">
-      <section class="card hero" style="--delay: 0.05s;">
+      <!-- Герой-секция -->
+      <section class="card hero" style="--delay: 0.05s;" aria-labelledby="heroTitle">
         <p class="eyebrow">PWA-трекер</p>
-        <h1>Счетчик голодания</h1>
+        <h1 id="heroTitle">Счетчик голодания</h1>
         <p class="hero-copy">
           Спокойный, наглядный экран для длинной дистанции: прогресс, остаток времени и короткая
           фраза, которая не даёт сорваться.
         </p>
         <div class="hero-meta">
-          <span class="status-pill" id="fastingStatus">Подготовка</span>
-          <span class="hero-time" id="currentTime">Синхронизация времени...</span>
+          <span class="status-pill" id="fastingStatus" role="status" aria-live="polite">Подготовка</span>
+          <span class="hero-time" id="currentTime" aria-live="polite">Синхронизация времени...</span>
         </div>
       </section>
 
-      <section class="dashboard">
-        <article class="card progress-card" style="--delay: 0.12s;">
+      <!-- Дашборд -->
+      <section class="dashboard" aria-label="Прогресс и таймер">
+        <!-- Кольцо прогресса -->
+        <article class="card progress-card" style="--delay: 0.12s;" aria-labelledby="progressTitle">
           <div class="card-head">
             <div>
               <p class="section-kicker">Прогресс</p>
@@ -50,17 +73,22 @@
 
           <div class="progress-ring" id="progressRing" aria-hidden="true">
             <div class="progress-ring__inner">
-              <span class="progress-ring__value" id="progressPercent">0%</span>
-              <span class="progress-ring__label" id="progressLabel">пройдено</span>
+              <span class="progress-ring__value" id="progressPercent" aria-hidden="true">0%</span>
+              <span class="progress-ring__label" aria-hidden="true">пройдено</span>
             </div>
           </div>
+          
+          <p class="sr-only" id="progressScreenReader" aria-live="polite">
+            Прогресс голодовки: 0 процентов пройдено
+          </p>
 
           <p class="progress-summary" id="progressSummary">
             Рассчитываем текущую фазу и долю уже пройденного пути.
           </p>
         </article>
 
-        <article class="card timer-card" style="--delay: 0.18s;">
+        <!-- Таймер -->
+        <article class="card timer-card" style="--delay: 0.18s;" aria-labelledby="countdownTitle">
           <div class="card-head">
             <div>
               <p class="section-kicker">Обратный отсчет</p>
@@ -69,39 +97,39 @@
             <p class="section-note" id="durationLabel">Длительность периода: --</p>
           </div>
 
-          <div class="timer-grid" aria-label="Оставшееся время">
+          <div class="timer-grid" id="timerGrid" aria-label="Оставшееся время" aria-live="polite">
             <div class="timer-unit">
-              <span class="timer-value" id="days">00</span>
+              <span class="timer-value" id="days" aria-label="дней">00</span>
               <span class="timer-label">дней</span>
             </div>
             <div class="timer-unit">
-              <span class="timer-value" id="hours">00</span>
+              <span class="timer-value" id="hours" aria-label="часов">00</span>
               <span class="timer-label">часов</span>
             </div>
             <div class="timer-unit">
-              <span class="timer-value" id="minutes">00</span>
+              <span class="timer-value" id="minutes" aria-label="минут">00</span>
               <span class="timer-label">минут</span>
             </div>
             <div class="timer-unit">
-              <span class="timer-value" id="seconds">00</span>
+              <span class="timer-value" id="seconds" aria-label="секунд">00</span>
               <span class="timer-label">секунд</span>
             </div>
           </div>
 
-          <div class="metrics">
-            <div class="metric">
+          <div class="metrics" role="list" aria-label="Метрики голодовки">
+            <div class="metric" role="listitem">
               <span class="metric-label">Старт</span>
               <strong class="metric-value" id="startTimeLabel">--</strong>
             </div>
-            <div class="metric">
+            <div class="metric" role="listitem">
               <span class="metric-label">Финиш</span>
               <strong class="metric-value" id="endTimeLabel">--</strong>
             </div>
-            <div class="metric">
+            <div class="metric" role="listitem">
               <span class="metric-label">Прошло</span>
               <strong class="metric-value" id="elapsedValue">--</strong>
             </div>
-            <div class="metric">
+            <div class="metric" role="listitem">
               <span class="metric-label">Осталось</span>
               <strong class="metric-value" id="remainingValue">--</strong>
             </div>
@@ -109,13 +137,16 @@
         </article>
       </section>
 
-      <section class="card quote-card" style="--delay: 0.24s;">
+      <!-- Мотивация -->
+      <section class="card quote-card" style="--delay: 0.24s;" aria-labelledby="quoteTitle">
         <div class="card-head">
           <div>
             <p class="section-kicker">Мотивация</p>
-            <h2 class="section-title">Фраза на текущий момент</h2>
+            <h2 class="section-title" id="quoteTitle">Фраза на текущий момент</h2>
           </div>
-          <button class="ghost-button" id="nextQuoteButton" type="button">Новая фраза</button>
+          <button class="ghost-button" id="nextQuoteButton" type="button" aria-label="Показать новую мотивационную фразу">
+            Новая фраза
+          </button>
         </div>
 
         <blockquote class="quote-text" id="quoteText">

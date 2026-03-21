@@ -1,3 +1,9 @@
+---
+include_toc: side
+lang: ru
+gitea: table
+---
+
 [![repo](https://s.evgn.ru/badge/repo-golod-app-2ea44f)](https://git.evgn.ru/evgeny/golod-app)
 ![kind](https://s.evgn.ru/badge/kind-site-0a7ea4)
 ![compose](https://s.evgn.ru/badge/compose-no-1f6feb)

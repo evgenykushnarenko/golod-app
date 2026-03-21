@@ -1,5 +1,14 @@
-const CACHE_NAME = 'golod-app-v2';
-const APP_SHELL = ['./', './index.html', './manifest.json', './favicon.svg', './icon.svg'];
+const CACHE_NAME = 'golod-app-v3';
+const APP_SHELL = [
+  './',
+  './index.html',
+  './manifest.json',
+  './favicon.svg',
+  './icon.svg',
+  './src/app.js',
+  './src/motivation.js',
+  './src/styles.css'
+];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
@@ -56,5 +65,28 @@ self.addEventListener('fetch', (event) => {
           return caches.match(request);
         });
     })
+  );
+});
+
+// Обработка push-уведомлений
+self.addEventListener('push', (event) => {
+  const options = {
+    body: event.data?.text() || 'Напоминание о голодовке',
+    icon: './icon.svg',
+    badge: './icon.svg',
+    tag: 'fasting-reminder',
+    requireInteraction: false
+  };
+
+  event.waitUntil(
+    self.registration.showNotification('Счетчик голодания', options)
+  );
+});
+
+// Обработка клика по уведомлению
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+  event.waitUntil(
+    self.clients.openWindow('./')
   );
 });
