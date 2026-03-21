@@ -147,33 +147,31 @@ const SHORT_DATE_FORMATTER = new Intl.DateTimeFormat(LOCALE, {
 
 // ==================== DOM РЕФЕРЕНСЫ ====================
 
-let refs = {};
+const refs = {};
 
 function initRefs() {
-  refs = {
-    currentTime: document.getElementById('currentTime'),
-    fastingStatus: document.getElementById('fastingStatus'),
-    rangeLabel: document.getElementById('rangeLabel'),
-    progressRing: document.getElementById('progressRing'),
-    progressPercent: document.getElementById('progressPercent'),
-    progressLabel: document.getElementById('progressLabel'),
-    progressTitle: document.getElementById('progressTitle'),
-    progressSummary: document.getElementById('progressSummary'),
-    countdownTitle: document.getElementById('countdownTitle'),
-    durationLabel: document.getElementById('durationLabel'),
-    days: document.getElementById('days'),
-    hours: document.getElementById('hours'),
-    minutes: document.getElementById('minutes'),
-    seconds: document.getElementById('seconds'),
-    startTimeLabel: document.getElementById('startTimeLabel'),
-    endTimeLabel: document.getElementById('endTimeLabel'),
-    elapsedValue: document.getElementById('elapsedValue'),
-    remainingValue: document.getElementById('remainingValue'),
-    quoteText: document.getElementById('quoteText'),
-    quoteAuthor: document.getElementById('quoteAuthor'),
-    nextQuoteButton: document.getElementById('nextQuoteButton'),
-    timerGrid: document.querySelector('.timer-grid')
-  };
+  refs.currentTime = document.getElementById('currentTime');
+  refs.fastingStatus = document.getElementById('fastingStatus');
+  refs.rangeLabel = document.getElementById('rangeLabel');
+  refs.progressRing = document.getElementById('progressRing');
+  refs.progressPercent = document.getElementById('progressPercent');
+  refs.progressLabel = document.getElementById('progressLabel');
+  refs.progressTitle = document.getElementById('progressTitle');
+  refs.progressSummary = document.getElementById('progressSummary');
+  refs.countdownTitle = document.getElementById('countdownTitle');
+  refs.durationLabel = document.getElementById('durationLabel');
+  refs.days = document.getElementById('days');
+  refs.hours = document.getElementById('hours');
+  refs.minutes = document.getElementById('minutes');
+  refs.seconds = document.getElementById('seconds');
+  refs.startTimeLabel = document.getElementById('startTimeLabel');
+  refs.endTimeLabel = document.getElementById('endTimeLabel');
+  refs.elapsedValue = document.getElementById('elapsedValue');
+  refs.remainingValue = document.getElementById('remainingValue');
+  refs.quoteText = document.getElementById('quoteText');
+  refs.quoteAuthor = document.getElementById('quoteAuthor');
+  refs.nextQuoteButton = document.getElementById('nextQuoteButton');
+  refs.timerGrid = document.querySelector('.timer-grid');
 }
 
 // ==================== УТИЛИТЫ ====================
