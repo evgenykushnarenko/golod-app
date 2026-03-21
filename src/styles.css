@@ -109,6 +109,17 @@ select {
   gap: 20px;
 }
 
+/* ==================== ВЕРСИЯ ПРИЛОЖЕНИЯ ==================== */
+
+.app-version {
+  text-align: center;
+  padding: 20px;
+  font-size: 0.75rem;
+  color: var(--muted);
+  opacity: 0.5;
+  font-family: monospace;
+}
+
 /* ==================== КАРТОЧКИ ==================== */
 
 .card {

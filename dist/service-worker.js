@@ -1,5 +1,16 @@
-const CACHE_NAME = 'golod-app-v2';
-const APP_SHELL = ['./', './index.html', './manifest.json', './favicon.svg', './icon.svg'];
+const CACHE_NAME = 'golod-app-v7';
+const APP_SHELL = [
+  './',
+  './index.html',
+  './assets/index-z16c2Pkp.js',
+  './assets/index-CYMb9IPC.css',
+  './assets/favicon-CaMMpFW5.svg',
+  './assets/icon-DVtki7Rh.svg',
+  './assets/manifest-CrVMqNic.json',
+  './favicon.svg',
+  './icon.svg',
+  './manifest.json'
+];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
@@ -9,52 +20,27 @@ self.addEventListener('install', (event) => {
 
 self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches
-      .keys()
-      .then((keys) =>
-        Promise.all(keys.filter((key) => key !== CACHE_NAME).map((key) => caches.delete(key)))
-      )
-      .then(() => self.clients.claim())
+    caches.keys().then((keys) =>
+      Promise.all(keys.filter((key) => key !== CACHE_NAME).map((key) => caches.delete(key)))
+    ).then(() => self.clients.claim())
   );
 });
 
 self.addEventListener('fetch', (event) => {
   const { request } = event;
-
-  if (request.method !== 'GET') {
-    return;
-  }
-
+  if (request.method !== 'GET') return;
   const requestUrl = new URL(request.url);
-
-  if (requestUrl.origin !== self.location.origin) {
-    return;
-  }
+  if (requestUrl.origin !== self.location.origin) return;
 
   event.respondWith(
     caches.match(request).then((cachedResponse) => {
-      if (cachedResponse) {
-        return cachedResponse;
-      }
-
-      return fetch(request)
-        .then((networkResponse) => {
-          if (!networkResponse || networkResponse.status !== 200) {
-            return networkResponse;
-          }
-
-          const responseClone = networkResponse.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(request, responseClone));
-
-          return networkResponse;
-        })
-        .catch(async () => {
-          if (request.mode === 'navigate') {
-            return caches.match('./index.html');
-          }
-
-          return caches.match(request);
-        });
+      if (cachedResponse) return cachedResponse;
+      return fetch(request).then((networkResponse) => {
+        if (!networkResponse || networkResponse.status !== 200) return networkResponse;
+        const responseClone = networkResponse.clone();
+        caches.open(CACHE_NAME).then((cache) => cache.put(request, responseClone));
+        return networkResponse;
+      }).catch(() => caches.match('./index.html'));
     })
   );
 });
