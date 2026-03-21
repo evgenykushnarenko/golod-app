@@ -8,30 +8,12 @@
   "background_color": "#07131d",
   "theme_color": "#07131d",
   "orientation": "portrait-primary",
-  "categories": ["health", "lifestyle", "utilities"],
-  "lang": "ru",
   "icons": [
     {
       "src": "./icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"
-    }
-  ],
-  "shortcuts": [
-    {
-      "name": "Настройки",
-      "short_name": "Настройки",
-      "description": "Открыть настройки голодовки",
-      "url": "./?action=settings",
-      "icons": [{ "src": "./icon.svg", "sizes": "any" }]
-    },
-    {
-      "name": "История",
-      "short_name": "История",
-      "description": "Посмотреть историю голодовок",
-      "url": "./?action=history",
-      "icons": [{ "src": "./icon.svg", "sizes": "any" }]
     }
   ]
 }

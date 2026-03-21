@@ -1,13 +1,15 @@
-const CACHE_NAME = 'golod-app-v3';
+const CACHE_NAME = 'golod-app-v10';
 const APP_SHELL = [
   './',
   './index.html',
-  './manifest.json',
+  './assets/index-B1-gZgAk.js',
+  './assets/index-CYMb9IPC.css',
+  './assets/favicon-CaMMpFW5.svg',
+  './assets/icon-DVtki7Rh.svg',
+  './assets/manifest-CrVMqNic.json',
   './favicon.svg',
   './icon.svg',
-  './src/app.js',
-  './src/motivation.js',
-  './src/styles.css'
+  './manifest.json'
 ];
 
 self.addEventListener('install', (event) => {
@@ -18,75 +20,27 @@ self.addEventListener('install', (event) => {
 
 self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches
-      .keys()
-      .then((keys) =>
-        Promise.all(keys.filter((key) => key !== CACHE_NAME).map((key) => caches.delete(key)))
-      )
-      .then(() => self.clients.claim())
+    caches.keys().then((keys) =>
+      Promise.all(keys.filter((key) => key !== CACHE_NAME).map((key) => caches.delete(key)))
+    ).then(() => self.clients.claim())
   );
 });
 
 self.addEventListener('fetch', (event) => {
   const { request } = event;
-
-  if (request.method !== 'GET') {
-    return;
-  }
-
+  if (request.method !== 'GET') return;
   const requestUrl = new URL(request.url);
-
-  if (requestUrl.origin !== self.location.origin) {
-    return;
-  }
+  if (requestUrl.origin !== self.location.origin) return;
 
   event.respondWith(
     caches.match(request).then((cachedResponse) => {
-      if (cachedResponse) {
-        return cachedResponse;
-      }
-
-      return fetch(request)
-        .then((networkResponse) => {
-          if (!networkResponse || networkResponse.status !== 200) {
-            return networkResponse;
-          }
-
-          const responseClone = networkResponse.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(request, responseClone));
-
-          return networkResponse;
-        })
-        .catch(async () => {
-          if (request.mode === 'navigate') {
-            return caches.match('./index.html');
-          }
-
-          return caches.match(request);
-        });
+      if (cachedResponse) return cachedResponse;
+      return fetch(request).then((networkResponse) => {
+        if (!networkResponse || networkResponse.status !== 200) return networkResponse;
+        const responseClone = networkResponse.clone();
+        caches.open(CACHE_NAME).then((cache) => cache.put(request, responseClone));
+        return networkResponse;
+      }).catch(() => caches.match('./index.html'));
     })
-  );
-});
-
-// Обработка push-уведомлений
-self.addEventListener('push', (event) => {
-  const options = {
-    body: event.data?.text() || 'Напоминание о голодовке',
-    icon: './icon.svg',
-    badge: './icon.svg',
-    tag: 'fasting-reminder',
-    requireInteraction: false
-  };
-
-  event.waitUntil(
-    self.registration.showNotification('Счетчик голодания', options)
-  );
-});
-
-// Обработка клика по уведомлению
-self.addEventListener('notificationclick', (event) => {
-  event.notification.close();
-  event.waitUntil(
-    self.clients.openWindow('./')
   );
 });
