@@ -5,6 +5,7 @@ import { motivationQuotes } from './motivation.js';
 const DEFAULT_START_TIME = new Date(2026, 2, 10, 22, 0, 0).getTime();
 const DEFAULT_END_TIME = new Date(2026, 2, 31, 22, 0, 0).getTime();
 const LOCALE = 'ru-RU';
+const MILESTONES = [25, 50, 75, 100];
 
 // ==================== ХРАНИЛИЩЕ ====================
 
@@ -37,11 +38,13 @@ const Storage = {
   },
 
   getStartTime() {
-    return this.get(this.KEYS.START_TIME, DEFAULT_START_TIME);
+    const value = Number(this.get(this.KEYS.START_TIME, DEFAULT_START_TIME));
+    return Number.isFinite(value) ? value : DEFAULT_START_TIME;
   },
 
   getEndTime() {
-    return this.get(this.KEYS.END_TIME, DEFAULT_END_TIME);
+    const value = Number(this.get(this.KEYS.END_TIME, DEFAULT_END_TIME));
+    return Number.isFinite(value) ? value : DEFAULT_END_TIME;
   },
 
   setStartTime(time) {
@@ -53,7 +56,8 @@ const Storage = {
   },
 
   getTheme() {
-    return this.get(this.KEYS.THEME, 'dark');
+    const theme = this.get(this.KEYS.THEME, 'dark');
+    return theme === 'light' ? 'light' : 'dark';
   },
 
   setTheme(theme) {
@@ -157,6 +161,7 @@ function initRefs() {
     progressRing: 'progressRing',
     progressPercent: 'progressPercent',
     progressLabel: 'progressLabel',
+    progressScreenReader: 'progressScreenReader',
     progressTitle: 'progressTitle',
     progressSummary: 'progressSummary',
     countdownTitle: 'countdownTitle',
@@ -172,18 +177,11 @@ function initRefs() {
     quoteText: 'quoteText',
     quoteAuthor: 'quoteAuthor',
     nextQuoteButton: 'nextQuoteButton',
-    timerGrid: '.timer-grid'
+    timerGrid: 'timerGrid'
   };
   
   for (const [key, id] of Object.entries(elements)) {
-    if (id.startsWith('.')) {
-      refs[key] = document.querySelector(id);
-    } else {
-      refs[key] = document.getElementById(id);
-    }
-    if (!refs[key]) {
-      console.error(`[DEBUG] Element not found: ${key} (id: ${id})`);
-    }
+    refs[key] = document.getElementById(id);
   }
 }
 
@@ -289,6 +287,10 @@ function getState(now) {
 // ==================== ОБНОВЛЕНИЕ UI ====================
 
 function updateProgress(state) {
+  if (!refs.progressRing || !refs.progressPercent || !refs.progressLabel || !refs.progressTitle || !refs.progressSummary) {
+    return;
+  }
+
   const progressValue = Math.round(state.progress);
 
   refs.progressRing.style.setProperty('--progress', `${state.progress.toFixed(2)}%`);
@@ -307,14 +309,16 @@ function updateProgress(state) {
     refs.progressSummary.textContent =
       `Пройдено ${progressValue}% пути. Внутри периода уже прошло ${formatDurationLabel(state.elapsed)}.`;
   }
+
+  if (refs.progressScreenReader) {
+    refs.progressScreenReader.textContent = `Прогресс голодовки: ${progressValue} процентов ${refs.progressLabel.textContent}`;
+  }
 }
 
 function updateCountdown(state, now) {
-  // DEBUG: Log all refs to identify null elements
   const requiredRefs = ['days', 'hours', 'minutes', 'seconds', 'countdownTitle', 'fastingStatus', 'elapsedValue', 'remainingValue'];
   const missingRefs = requiredRefs.filter(key => !refs[key]);
   if (missingRefs.length > 0) {
-    console.error('[DEBUG] Missing refs in updateCountdown:', missingRefs);
     return;
   }
   
@@ -335,7 +339,6 @@ function updateCountdown(state, now) {
       ? formatDurationLabel(state.startTime - now)
       : formatDurationLabel(state.remaining);
 
-  // Обновляем aria-label для скринридеров
   if (refs.timerGrid) {
     const timeText = `${parts.days} дней, ${parts.hours} часов, ${parts.minutes} минут, ${parts.seconds} секунд`;
     refs.timerGrid.setAttribute('aria-label', `Оставшееся время: ${timeText}`);
@@ -343,11 +346,9 @@ function updateCountdown(state, now) {
 }
 
 function updateStaticLabels(state) {
-  // DEBUG: Check refs
   const requiredRefs = ['rangeLabel', 'startTimeLabel', 'endTimeLabel', 'durationLabel'];
   const missingRefs = requiredRefs.filter(key => !refs[key]);
   if (missingRefs.length > 0) {
-    console.error('[DEBUG] Missing refs in updateStaticLabels:', missingRefs);
     return;
   }
   
@@ -369,36 +370,53 @@ async function requestNotificationPermission() {
 }
 
 async function sendNotification(title, body) {
-  if (!Storage.areNotificationsEnabled()) return;
-  
-  if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
-    navigator.serviceWorker.ready.then(registration => {
-      registration.showNotification(title, {
+  if (!Storage.areNotificationsEnabled() || !('Notification' in window) || Notification.permission !== 'granted') {
+    return;
+  }
+
+  const iconUrl = new URL('./icon.svg', window.location.href).href;
+
+  try {
+    if ('serviceWorker' in navigator) {
+      const registration = await navigator.serviceWorker.ready;
+      await registration.showNotification(title, {
         body,
-        icon: './icon.svg',
-        badge: './icon.svg',
+        icon: iconUrl,
+        badge: iconUrl,
         tag: 'fasting-reminder'
       });
+      return;
+    }
+
+    new Notification(title, {
+      body,
+      icon: iconUrl
     });
+  } catch (error) {
+    console.error('Notification failed:', error);
   }
 }
 
 function checkMilestones(state) {
-  if (!Storage.areNotificationsEnabled() || state.phase !== 'active') return;
+  if (!Storage.areNotificationsEnabled()) return;
 
-  const milestones = [25, 50, 75, 100];
-  const progress = Math.round(state.progress);
+  const milestonesNotified = Storage.getMilestonesNotified();
+
+  if (state.phase === 'completed' && !milestonesNotified[100]) {
+    Storage.setMilestoneNotified(100);
+    sendNotification('Поздравляем!', 'Вы успешно завершили голодовку!');
+    return;
+  }
+
+  if (state.phase !== 'active') return;
+
+  const progress = Math.floor(state.progress);
   
-  for (const milestone of milestones) {
-    if (progress >= milestone && !Storage.getMilestonesNotified()[milestone]) {
+  for (const milestone of MILESTONES.filter((value) => value < 100)) {
+    if (progress >= milestone && !milestonesNotified[milestone]) {
       Storage.setMilestoneNotified(milestone);
-      
-      if (milestone === 100) {
-        sendNotification('🎉 Поздравляем!', 'Вы успешно завершили голодовку!');
-      } else {
-        sendNotification('📊 Прогресс голодовки', `Вы прошли ${milestone}% пути! Продолжайте в том же духе!`);
-      }
-      break;
+      sendNotification('Прогресс голодовки', `Вы прошли ${milestone}% пути. Продолжайте в том же духе.`);
+      return;
     }
   }
 }
@@ -455,11 +473,31 @@ async function shareProgress(state) {
 }
 
 function copyToClipboard(text) {
-  navigator.clipboard.writeText(text).then(() => {
-    showToast('Текст скопирован в буфер обмена');
-  }).catch(() => {
+  if (navigator.clipboard?.writeText) {
+    navigator.clipboard.writeText(text).then(() => {
+      showToast('Текст скопирован в буфер обмена');
+    }).catch(() => {
+      showToast('Не удалось скопировать текст');
+    });
+    return;
+  }
+
+  const textArea = document.createElement('textarea');
+  textArea.value = text;
+  textArea.setAttribute('readonly', '');
+  textArea.style.position = 'absolute';
+  textArea.style.left = '-9999px';
+  document.body.appendChild(textArea);
+  textArea.select();
+
+  try {
+    const copied = document.execCommand('copy');
+    showToast(copied ? 'Текст скопирован в буфер обмена' : 'Не удалось скопировать текст');
+  } catch {
     showToast('Не удалось скопировать текст');
-  });
+  } finally {
+    textArea.remove();
+  }
 }
 
 // ==================== UI КОМПОНЕНТЫ ====================
@@ -727,22 +765,12 @@ function closeModal(modal) {
 
 function refreshQuotesModal(modal) {
   const newModal = createQuotesModal();
-  modal.innerHTML = newModal.innerHTML;
-  modal.className = newModal.className;
-  modal.id = newModal.id;
-  modal.setAttribute('role', 'dialog');
-  modal.setAttribute('aria-labelledby', 'quotesTitle');
-  modal.setAttribute('aria-modal', 'true');
+  modal.replaceWith(newModal);
 }
 
 function refreshHistoryModal(modal) {
   const newModal = createHistoryModal();
-  modal.innerHTML = newModal.innerHTML;
-  modal.className = newModal.className;
-  modal.id = newModal.id;
-  modal.setAttribute('role', 'dialog');
-  modal.setAttribute('aria-labelledby', 'historyTitle');
-  modal.setAttribute('aria-modal', 'true');
+  modal.replaceWith(newModal);
 }
 
 function createActionButtons() {
@@ -830,7 +858,7 @@ async function registerServiceWorker() {
 
   try {
     const serviceWorkerUrl = new URL('./service-worker.js', window.location.href);
-    const registration = await navigator.serviceWorker.register(serviceWorkerUrl);
+    await navigator.serviceWorker.register(serviceWorkerUrl);
     
     // Запрашиваем разрешение на уведомления при регистрации, если ранее было включено
     if (Storage.areNotificationsEnabled()) {
@@ -846,9 +874,7 @@ async function registerServiceWorker() {
 let lastUpdate = 0;
 
 function updateLoop(timestamp) {
-  // Обновляем каждую секунду
   if (timestamp - lastUpdate >= 1000) {
-    console.log('[DEBUG] updateLoop tick', timestamp);
     const now = Date.now();
     const state = getState(now);
 
@@ -875,36 +901,25 @@ function updateUI() {
 // ==================== ИНИЦИАЛИЗАЦИЯ ====================
 
 function init() {
-  console.log('[DEBUG] init() started');
-  
-  // Инициализируем DOM-ссылки
   initRefs();
-  console.log('[DEBUG] initRefs() completed', refs);
-  
-  // Применяем сохранённую тему
   Storage.setTheme(Storage.getTheme());
 
-  // Добавляем кнопки действий
   const heroMeta = document.querySelector('.hero-meta');
   if (heroMeta) {
     heroMeta.after(createActionButtons());
   }
 
-  // Начальное обновление
-  console.log('[DEBUG] Calling updateUI()');
   updateUI();
-  console.log('[DEBUG] updateUI() completed');
   showRandomQuote();
   registerServiceWorker();
 
-  // Обработчики событий
-  refs.nextQuoteButton.addEventListener('click', showRandomQuote);
-  refs.nextQuoteButton.setAttribute('aria-label', 'Показать новую мотивационную фразу');
+  if (refs.nextQuoteButton) {
+    refs.nextQuoteButton.addEventListener('click', showRandomQuote);
+    refs.nextQuoteButton.setAttribute('aria-label', 'Показать новую мотивационную фразу');
+  }
 
-  // Запускаем цикл обновления через requestAnimationFrame
   requestAnimationFrame(updateLoop);
 
-  // Смена фразы каждую минуту
   setInterval(showRandomQuote, 60000);
 }
 

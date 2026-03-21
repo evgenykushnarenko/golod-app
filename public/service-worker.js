@@ -1,4 +1,4 @@
-const CACHE_NAME = 'golod-app-v2';
+const CACHE_NAME = 'golod-app-v13';
 const APP_SHELL = ['./', './index.html', './manifest.json', './favicon.svg', './icon.svg'];
 
 self.addEventListener('install', (event) => {

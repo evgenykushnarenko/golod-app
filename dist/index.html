@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Счетчик голодания v2.0</title>
+  <title>Счетчик голодания</title>
   
   <!-- Тема и цвета -->
   <meta name="theme-color" content="#07131d">
@@ -32,15 +32,15 @@
   <meta name="twitter:image" content="data:image/svg+xml,%3csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20512%20512'%3e%3cdefs%3e%3clinearGradient%20id='bg'%20x1='0%25'%20y1='0%25'%20x2='100%25'%20y2='100%25'%3e%3cstop%20offset='0%25'%20stop-color='%2357d7e5'%20/%3e%3cstop%20offset='100%25'%20stop-color='%23ffb14a'%20/%3e%3c/linearGradient%3e%3c/defs%3e%3crect%20width='512'%20height='512'%20rx='128'%20fill='%23091722'%20/%3e%3ccircle%20cx='256'%20cy='256'%20r='176'%20fill='none'%20stroke='url(%23bg)'%20stroke-width='48'%20stroke-linecap='round'%20stroke-dasharray='832%20272'%20transform='rotate(-90%20256%20256)'%20/%3e%3cpath%20d='M192%20132h128v48c0%2038-22%2064-48%2084%2026%2020%2048%2046%2048%2084v48H192v-48c0-38%2022-64%2048-84-26-20-48-46-48-84v-48z'%20fill='none'%20stroke='%23f2f7fb'%20stroke-width='32'%20stroke-linejoin='round'%20/%3e%3cpath%20d='M216%20376h80'%20stroke='%2357d7e5'%20stroke-width='28'%20stroke-linecap='round'%20/%3e%3c/svg%3e">
   
   <!-- Иконки -->
-  <link rel="icon" type="image/svg+xml" href="./assets/favicon-CaMMpFW5-CaMMpFW5-CaMMpFW5.svg">
-  <link rel="apple-touch-icon" href="./assets/icon-DVtki7Rh-DVtki7Rh-DVtki7Rh.svg">
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+  <link rel="apple-touch-icon" href="./icon.svg">
   
   <!-- Стили -->
   
   <!-- Манифест -->
-  <link rel="manifest" href="./assets/manifest-CrVMqNic-CrVMqNic-CrVMqNic.json">
-  <script type="module" crossorigin src="./assets/index-D0U5_FUh.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-DSiJBi5f.css">
+  <link rel="manifest" href="./manifest.json">
+  <script type="module" crossorigin src="./assets/index-DSZqrvSs.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-CYMb9IPC.css">
 </head>
 <body>
   <div class="app-shell">
@@ -74,7 +74,7 @@
           <div class="progress-ring" id="progressRing" aria-hidden="true">
             <div class="progress-ring__inner">
               <span class="progress-ring__value" id="progressPercent" aria-hidden="true">0%</span>
-              <span class="progress-ring__label" aria-hidden="true">пройдено</span>
+              <span class="progress-ring__label" id="progressLabel" aria-hidden="true">пройдено</span>
             </div>
           </div>
           
@@ -156,7 +156,7 @@
       </section>
     </main>
     
-    <footer class="app-version">v2.1.6-debug</footer>
+    <footer class="app-version">v2.1.6</footer>
   </div>
 
 </body>
