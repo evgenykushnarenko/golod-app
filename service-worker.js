@@ -1,5 +1,5 @@
 const CACHE_NAME = 'golod-app-v3';
-const APP_SHELL = ['./', './index.html', './manifest.json', './favicon.svg', './icon.svg', './assets/styles.css', './assets/app.js'];
+const APP_SHELL = ['./', './index.html', './manifest.json', './favicon.svg', './icon.svg', './assets/styles.css', './assets/app.js', './assets/motivation.js'];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
