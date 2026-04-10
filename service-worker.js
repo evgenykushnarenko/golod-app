@@ -1,5 +1,5 @@
-const CACHE_NAME = 'golod-app-v13';
-const APP_SHELL = ['./', './index.html', './manifest.json', './favicon.svg', './icon.svg'];
+const CACHE_NAME = 'golod-app-v3';
+const APP_SHELL = ['./', './index.html', './manifest.json', './favicon.svg', './icon.svg', './assets/styles.css', './assets/app.js'];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
@@ -57,4 +57,15 @@ self.addEventListener('fetch', (event) => {
         });
     })
   );
+});
+
+// Offline fallback page
+self.addEventListener('fetch', (event) => {
+  if (event.request.mode === 'navigate') {
+    event.respondWith(
+      fetch(event.request).catch(() => {
+        return caches.match('./index.html');
+      })
+    );
+  }
 });
