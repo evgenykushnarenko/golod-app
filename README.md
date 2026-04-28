@@ -3,7 +3,7 @@ include_toc: true
 gitea: none
 ---
 
-[![repo](https://img.shields.io/badge/repo-golod--app-2ea44f)](https://git.kushnaren.co/evgeny/golod-app)
+[![repo](https://img.shields.io/badge/repo-golod--app-2ea44f)](https://github.com/evgn-k/golod-app)
 ![kind](https://img.shields.io/badge/kind-site-0a7ea4)
 ![compose](https://img.shields.io/badge/compose-no-1f6feb)
 ![agents](https://img.shields.io/badge/agents-yes-ff9800)
