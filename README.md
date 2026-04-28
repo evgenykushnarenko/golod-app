@@ -3,12 +3,12 @@ include_toc: true
 gitea: none
 ---
 
-[![repo](https://s.evgn.ru/badge/repo-golod-app-2ea44f)](https://git.evgn.ru/evgeny/golod-app)
-![kind](https://s.evgn.ru/badge/kind-site-0a7ea4)
-![compose](https://s.evgn.ru/badge/compose-no-1f6feb)
-![agents](https://s.evgn.ru/badge/agents-yes-ff9800)
-![license](https://s.evgn.ru/badge/license-MIT-4caf50)
-![managed_by](https://s.evgn.ru/badge/managed%20by-Git-4caf50)
+[![repo](https://img.shields.io/badge/repo-golod--app-2ea44f)](https://git.kushnaren.co/evgeny/golod-app)
+![kind](https://img.shields.io/badge/kind-site-0a7ea4)
+![compose](https://img.shields.io/badge/compose-no-1f6feb)
+![agents](https://img.shields.io/badge/agents-yes-ff9800)
+![license](https://img.shields.io/badge/license-MIT-4caf50)
+![managed_by](https://img.shields.io/badge/managed%20by-Git-4caf50)
 
 # Счетчик голодания
 
